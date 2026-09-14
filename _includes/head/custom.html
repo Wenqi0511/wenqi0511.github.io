@@ -117,12 +117,15 @@
       document.title = (zh ? t[1] : t[0]) + ' · Zhao Wenqi';
     }
   }
-  /* 监听 body 的 class 变化：点语言按钮时自动触发 */
-  new MutationObserver(apply).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', apply);
-  } else {
+  /* 必须等 body 存在之后再监听，否则在 head 里执行会报错 */
+  function boot() {
+    new MutationObserver(apply).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     apply();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
   }
 })();
 </script>
