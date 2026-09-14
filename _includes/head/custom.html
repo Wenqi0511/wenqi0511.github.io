@@ -19,7 +19,7 @@
 <link rel="icon" href="/images/favicon.ico"/>
 <meta name="theme-color" content="var(--global-bg-color)"/>
 
-<!-- ===== 思源宋体：加载全部字重，保证粗体仍是粗体 ===== -->
+<!-- ===== 思源宋体（全字重，保证粗体仍是粗体） ===== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -30,9 +30,7 @@
   body:not(.zh) .lang-zh { display: none !important; }
   #lang-toggle a { cursor: pointer; font-weight: 600; white-space: nowrap; }
 
-  /* ---------- 2. 中文模式：所有中文用思源宋体 ----------
-     英文字体排在前面 → 拉丁字母/数字保持原样，中文自动回退到思源宋体。
-     只改 font-family，不动 font-weight，所以原来加粗的照旧加粗。 */
+  /* ---------- 2. 中文模式：思源宋体放第一位 ---------- */
   body.zh,
   body.zh .masthead,
   body.zh .greedy-nav,
@@ -41,41 +39,41 @@
   body.zh .page__title,
   body.zh .author__name,
   body.zh .author__bio,
+  body.zh .author__urls,
   body.zh h1, body.zh h2, body.zh h3,
   body.zh h4, body.zh h5, body.zh h6,
   body.zh p, body.zh li, body.zh div, body.zh span,
   body.zh a, body.zh summary, body.zh em,
-  body.zh b, body.zh strong {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                 "Noto Serif SC", "Songti SC", "STSong", serif !important;
+  body.zh b, body.zh strong, body.zh button {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif !important;
   }
   body.zh b, body.zh strong { font-weight: 700; }
 
-  /* ---------- 3. 中文排版细节：字号 / 行距 / 字距 ---------- */
-  body.zh { font-size: 103%; letter-spacing: 0.015em; }
+  /* ---------- 3. 排版：字号 / 行距 / 字距（已调小） ---------- */
+  body.zh { font-size: 96%; letter-spacing: 0.01em; }
   body.zh .page__content p,
   body.zh .page__content li,
   body.zh .archive p,
-  body.zh .archive li { line-height: 1.95; }
+  body.zh .archive li { line-height: 1.72; }
 
   body.zh .page__title {
-    font-weight: 700; letter-spacing: 0.06em;
+    font-weight: 700; font-size: 1.45em; letter-spacing: 0.05em;
   }
   body.zh .page__content h2,
   body.zh .archive h2 {
-    font-weight: 700; font-size: 1.5em; letter-spacing: 0.03em;
-    margin-top: 1.8em; margin-bottom: .6em;
+    font-weight: 700; font-size: 1.28em; letter-spacing: 0.02em;
+    margin-top: 1.5em; margin-bottom: .45em;
   }
   body.zh .page__content h3,
   body.zh .archive h3 {
-    font-weight: 700; font-size: 1.15em; letter-spacing: 0.02em;
-    margin-top: 1.6em; margin-bottom: .5em;
+    font-weight: 700; font-size: 1.06em; letter-spacing: 0.02em;
+    margin-top: 1.3em; margin-bottom: .35em;
   }
-  body.zh .greedy-nav a { font-size: 0.95em; letter-spacing: 0.06em; }
-  body.zh .author__name { font-weight: 700; letter-spacing: 0.05em; }
-  body.zh .author__bio  { line-height: 1.9; font-size: 0.92em; }
-  body.zh .author__urls li { line-height: 1.85; }
-  body.zh summary { line-height: 1.85; }
+  body.zh .greedy-nav a { font-size: 0.9em; letter-spacing: 0.04em; }
+  body.zh .author__name { font-weight: 700; font-size: 1em; letter-spacing: 0.04em; }
+  body.zh .author__bio  { line-height: 1.7; font-size: 0.86em; }
+  body.zh .author__urls li { line-height: 1.68; }
+  body.zh summary { line-height: 1.7; }
 </style>
 
 <script>
@@ -112,7 +110,6 @@
 
 <script>
 (function () {
-  /* 导航标签 / 页面大标题 翻译字典：网址 → [英文, 中文] */
   var NAV = {
     '/publications/': ['Academic Experience', '学术经历'],
     '/talks/':        ['Internship Experience', '实习经历'],
@@ -162,7 +159,6 @@
       document.title = (zh ? t[1] : t[0]) + ' · Zhao Wenqi';
     }
   }
-  /* 必须等 body 存在后再监听 */
   function boot() {
     new MutationObserver(apply).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     apply();
