@@ -10,7 +10,7 @@
  <link rel="preload" href="{{ base_path }}/assets/css/fontawesome.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ base_path }}/assets/css/fontawesome.css"></noscript>
 
-<!-- favicon from https://commons.wikimedia.org/wiki/File:OOjs_UI_icon_academic-progressive.svg -->
+<!-- favicon -->
 <link rel="apple-touch-icon" sizes="180x180" href="{{ base_path }}/images/apple-touch-icon-180x180.png"/>
 <link rel="icon" type="image/svg+xml" href="{{ base_path }}/images/favicon.svg"/>
 <link rel="icon" type="image/png" href="{{ base_path }}/images/favicon-32x32.png" sizes="32x32"/>
@@ -18,22 +18,72 @@
 <link rel="manifest" href="{{ base_path }}/images/manifest.json"/>
 <link rel="icon" href="/images/favicon.ico"/>
 <meta name="theme-color" content="var(--global-bg-color)"/>
+
+<!-- ===== 思源宋体：加载全部字重，保证粗体仍是粗体 ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
 <style>
-  /* 中英切换核心 CSS：中文模式隐藏英文，英文模式隐藏中文 */
+  /* ---------- 1. 中英切换核心 ---------- */
   body.zh .lang-en { display: none !important; }
   body:not(.zh) .lang-zh { display: none !important; }
   #lang-toggle a { cursor: pointer; font-weight: 600; white-space: nowrap; }
+
+  /* ---------- 2. 中文模式：所有中文用思源宋体 ----------
+     英文字体排在前面 → 拉丁字母/数字保持原样，中文自动回退到思源宋体。
+     只改 font-family，不动 font-weight，所以原来加粗的照旧加粗。 */
+  body.zh,
+  body.zh .masthead,
+  body.zh .greedy-nav,
+  body.zh .greedy-nav a,
+  body.zh .masthead__menu-item,
+  body.zh .page__title,
+  body.zh .author__name,
+  body.zh .author__bio,
+  body.zh h1, body.zh h2, body.zh h3,
+  body.zh h4, body.zh h5, body.zh h6,
+  body.zh p, body.zh li, body.zh div, body.zh span,
+  body.zh a, body.zh summary, body.zh em,
+  body.zh b, body.zh strong {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Noto Serif SC", "Songti SC", "STSong", serif !important;
+  }
+  body.zh b, body.zh strong { font-weight: 700; }
+
+  /* ---------- 3. 中文排版细节：字号 / 行距 / 字距 ---------- */
+  body.zh { font-size: 103%; letter-spacing: 0.015em; }
+  body.zh .page__content p,
+  body.zh .page__content li,
+  body.zh .archive p,
+  body.zh .archive li { line-height: 1.95; }
+
+  body.zh .page__title {
+    font-weight: 700; letter-spacing: 0.06em;
+  }
+  body.zh .page__content h2,
+  body.zh .archive h2 {
+    font-weight: 700; font-size: 1.5em; letter-spacing: 0.03em;
+    margin-top: 1.8em; margin-bottom: .6em;
+  }
+  body.zh .page__content h3,
+  body.zh .archive h3 {
+    font-weight: 700; font-size: 1.15em; letter-spacing: 0.02em;
+    margin-top: 1.6em; margin-bottom: .5em;
+  }
+  body.zh .greedy-nav a { font-size: 0.95em; letter-spacing: 0.06em; }
+  body.zh .author__name { font-weight: 700; letter-spacing: 0.05em; }
+  body.zh .author__bio  { line-height: 1.9; font-size: 0.92em; }
+  body.zh .author__urls li { line-height: 1.85; }
+  body.zh summary { line-height: 1.85; }
 </style>
 
 <script>
 (function () {
   var KEY = 'site-lang';
   function apply(lang) {
-    if (lang === 'zh') {
-      document.body.classList.add('zh');
-    } else {
-      document.body.classList.remove('zh');
-    }
+    if (lang === 'zh') { document.body.classList.add('zh'); }
+    else { document.body.classList.remove('zh'); }
     document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
     var btn = document.getElementById('lang-toggle');
     if (btn) {
@@ -56,31 +106,13 @@
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  } else { init(); }
 })();
 </script>
-<!-- 中文字体：Google Fonts（按需加载，不拖慢速度） -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
 
-<style>
-  /* 仅中文模式下生效，英文页面保持原样 */
-  body.zh {
-    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  }
-  body.zh h1, body.zh h2, body.zh h3, body.zh h4, body.zh h5, body.zh h6,
-  body.zh .page__title, body.zh .author__name {
-    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
-  }
-</style>
-
-<!-- end custom head snippets -->
 <script>
 (function () {
-  /* 导航标签翻译字典：网址 → [英文, 中文] */
+  /* 导航标签 / 页面大标题 翻译字典：网址 → [英文, 中文] */
   var NAV = {
     '/publications/': ['Academic Experience', '学术经历'],
     '/talks/':        ['Internship Experience', '实习经历'],
@@ -88,7 +120,6 @@
     '/year-archive/': ['Reading & Music', '阅读与音乐'],
     '/cv/':           ['CV', '简历']
   };
-  /* 页面大标题翻译字典：网址 → [英文, 中文] */
   var TITLES = {
     '/publications/': ['Academic experience', '学术经历'],
     '/talks/':        ['Internship Experience', '实习经历'],
@@ -123,9 +154,7 @@
         for (var j = 0; j < h1.childNodes.length; j++) {
           var n = h1.childNodes[j];
           if (n.nodeType === 3 && n.textContent.trim()) {
-            n.textContent = (zh ? t[1] : t[0]);
-            set = true;
-            break;
+            n.textContent = (zh ? t[1] : t[0]); set = true; break;
           }
         }
         if (!set) h1.insertBefore(document.createTextNode(zh ? t[1] : t[0]), h1.firstChild);
@@ -133,15 +162,15 @@
       document.title = (zh ? t[1] : t[0]) + ' · Zhao Wenqi';
     }
   }
-  /* 必须等 body 存在之后再监听，否则在 head 里执行会报错 */
+  /* 必须等 body 存在后再监听 */
   function boot() {
     new MutationObserver(apply).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     apply();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  } else { boot(); }
 })();
 </script>
+
+<!-- end custom head snippets -->
