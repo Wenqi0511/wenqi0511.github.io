@@ -61,6 +61,22 @@
   }
 })();
 </script>
+<!-- 中文字体：Google Fonts（按需加载，不拖慢速度） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* 仅中文模式下生效，英文页面保持原样 */
+  body.zh {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  body.zh h1, body.zh h2, body.zh h3, body.zh h4, body.zh h5, body.zh h6,
+  body.zh .page__title, body.zh .author__name {
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+  }
+</style>
+
 <!-- end custom head snippets -->
 <script>
 (function () {
