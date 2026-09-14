@@ -62,3 +62,67 @@
 })();
 </script>
 <!-- end custom head snippets -->
+<script>
+(function () {
+  /* 导航标签翻译字典：网址 → [英文, 中文] */
+  var NAV = {
+    '/publications/': ['Academic Experience', '学术经历'],
+    '/talks/':        ['Internship Experience', '实习经历'],
+    '/portfolio/':    ['Portfolio', '作品集'],
+    '/year-archive/': ['Reading & Music', '阅读与音乐'],
+    '/cv/':           ['CV', '简历']
+  };
+  /* 页面大标题翻译字典：网址 → [英文, 中文] */
+  var TITLES = {
+    '/publications/': ['Academic experience', '学术经历'],
+    '/talks/':        ['Internship Experience', '实习经历'],
+    '/portfolio/':    ['Portfolio', '作品集'],
+    '/year-archive/': ['Reading & Music', '阅读与音乐'],
+    '/cv/':           ['CV', '简历']
+  };
+  function norm(p) {
+    if (!p) return '';
+    p = p.replace(/^https?:\/\/[^\/]+/, '');
+    if (p.charAt(0) !== '/') p = '/' + p;
+    if (p.charAt(p.length - 1) !== '/') p += '/';
+    return p;
+  }
+  function here() {
+    var p = location.pathname;
+    if (p.charAt(p.length - 1) !== '/') p += '/';
+    return p;
+  }
+  function apply() {
+    var zh = document.body.classList.contains('zh');
+    var links = document.querySelectorAll('.greedy-nav a');
+    for (var i = 0; i < links.length; i++) {
+      var pair = NAV[norm(links[i].getAttribute('href'))];
+      if (pair) links[i].textContent = zh ? pair[1] : pair[0];
+    }
+    var t = TITLES[here()];
+    if (t) {
+      var h1 = document.querySelector('.page__title');
+      if (h1) {
+        var set = false;
+        for (var j = 0; j < h1.childNodes.length; j++) {
+          var n = h1.childNodes[j];
+          if (n.nodeType === 3 && n.textContent.trim()) {
+            n.textContent = (zh ? t[1] : t[0]);
+            set = true;
+            break;
+          }
+        }
+        if (!set) h1.insertBefore(document.createTextNode(zh ? t[1] : t[0]), h1.firstChild);
+      }
+      document.title = (zh ? t[1] : t[0]) + ' · Zhao Wenqi';
+    }
+  }
+  /* 监听 body 的 class 变化：点语言按钮时自动触发 */
+  new MutationObserver(apply).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else {
+    apply();
+  }
+})();
+</script>
